@@ -1,6 +1,6 @@
 class Payroll < ActiveRecord::Base
   STARTS = 5
-  ENDS = 20
+  ENDS = 29
 
   scope :ordered, -> { order(starts_at: :asc) }
   validates :starts_at, :ends_at, presence: true

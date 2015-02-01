@@ -79,4 +79,23 @@ RSpec.describe Payroll, type: :model do
       expect(payroll3.ends_at).to eq(time.change(day: 25).advance(months: 1))
     end
   end
+
+  describe 'spesific cases' do
+    before do
+      time = Time.now.change({ year: 2015, month: 2, day: 1 })
+      Timecop.freeze(time.to_date)
+      set_limits(5, 29)
+    end
+
+    it 'common year 29 feb' do
+      payroll = Payroll.create
+      expect(payroll.starts_at).to eq(time.change(day: 5))
+      expect(payroll.ends_at).to eq(time.change(day: 28))
+
+      payroll2 = Payroll.create
+      expect(payroll2.starts_at).to eq(time.change(day: 1).advance(months: 1))
+      expect(payroll2.ends_at).to eq(time.change(day: 4).advance(months: 1))
+    end
+
+  end
 end
