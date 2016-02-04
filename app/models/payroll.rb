@@ -15,16 +15,18 @@ class Payroll < ActiveRecord::Base
 
     def next_payroll(last_payroll)
       if last_payroll.strftime('%d') =='19'
-        twentieth = (last_payroll).strftime('20 %b')
-        fourth = (last_payroll + 1.month).strftime('4 %b')
-        create(starts_at: twentieth, ends_at: fourth) #TODO
-        p '20-4'
+        fourth = (last_payroll + 1.month).strftime('4 %b %Y')
+        create(starts_at: payroll_day(20), ends_at: fourth)
       else
-        fifth = (last_payroll + 1.month).strftime('5 %b')
-        nineteenth = (last_payroll + 1.month).strftime('19 %b')
-        create(starts_at: fifth, ends_at: nineteenth)
-        p '5-19'
+        create(starts_at: payroll_day(5), ends_at: payroll_day(19))
       end
+    end
+
+
+    private
+
+    def payroll_day(day)
+      last_payroll.strftime("#{day} %b %Y")
     end
 
   end
