@@ -1,28 +1,23 @@
-== README
+== Предметная область
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Модель Payroll представляет собой ведомость выплаты зарплаты, а точнее, ее шапку.
+Для простоты у нее есть только два атрибута - начало (starts_at) и конец периода (ends_at), за который выплачивается ЗП.
 
-Things you may want to cover:
+Зарплата в кампании выплачивается два раза в месяц, 5 и 20 числа.
 
-* Ruby version
+Пример:
 
-* System dependencies
+  5 января - 19 января
+  20 января - 4 февраля
+  5 февраля - 19 февраля
 
-* Configuration
+== TODO
 
-* Database creation
+* Создавать новый payroll с датами в соответствии с раписанием.
+* Каждый новый payroll должен создаваться в стык с предудущим.
+* Дни выплат могут меняться
 
-* Database initialization
+== Advanced
 
-* How to run the test suite
+* Автоматическое создание Payroll в начале нового периода
 
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
