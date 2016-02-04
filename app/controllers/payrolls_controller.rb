@@ -7,7 +7,13 @@ class PayrollsController < ApplicationController
   end
 
   def create
-    redirect_to action: :index
+    if Payroll.no_payrolls?
+      Payroll.create(starts_at: '5 January'.to_date, ends_at: '19 January'.to_date)
+      redirect_to action: :index
+    else
+      Payroll.next_payroll(Payroll.last_payroll)
+      redirect_to action: :index
+    end
   end
 
   def destroy
