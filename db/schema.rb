@@ -14,8 +14,8 @@
 ActiveRecord::Schema.define(version: 20160204093740) do
 
   create_table "payrolls", force: :cascade do |t|
-    t.datetime "starts_at"
-    t.datetime "ends_at"
+    t.date     "starts_at"
+    t.date     "ends_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
