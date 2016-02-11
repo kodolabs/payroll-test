@@ -54,11 +54,12 @@ RSpec.describe Payroll, type: :model do
     it 'calculates next date' do
       expect(subject.send(:next_date, DateTime.new(2016, 2, 20))).to eq(DateTime.new(2016, 2, 29))
       expect(subject.send(:next_date, DateTime.new(2016, 8, 30))).to eq(DateTime.new(2016, 9, 3))
+      expect(subject.send(:next_date, DateTime.new(2016, 12, 30))).to eq(DateTime.new(2017, 1, 3))
     end
 
     it 'calculates prev date' do
-      expect(subject.send(:next_date, DateTime.new(2016, 2, 3))).to eq(DateTime.new(2016, 1, 30))
-      expect(subject.send(:next_date, DateTime.new(2016, 3, 3))).to eq(DateTime.new(2016, 2, 29))
+      expect(subject.send(:prev_date, DateTime.new(2016, 2, 3))).to eq(DateTime.new(2016, 1, 30))
+      expect(subject.send(:prev_date, DateTime.new(2016, 3, 3))).to eq(DateTime.new(2016, 2, 29))
     end
   end
 end
