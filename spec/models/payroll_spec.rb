@@ -43,7 +43,7 @@ RSpec.describe Payroll, type: :model do
     it 'sets correct dates' do
       Timecop.freeze(DateTime.new(2016, 9, 11)) do
         expect(subject.starts_at).to eq(DateTime.new(2016, 9, 3))
-        expect(subject.ends_at).to eq(DateTime.new(2016, 9, 18))
+        expect(subject.ends_at).to eq(DateTime.new(2016, 9, 17))
       end
     end
   end

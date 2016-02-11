@@ -11,7 +11,7 @@ class Payroll < ActiveRecord::Base
       p.ends_at = next_date(start)
     else
       p.starts_at = prev_date(DateTime.now)
-      p.ends_at = next_date(DateTime.now.advance(days: -1))
+      p.ends_at = next_date(DateTime.now.advance(days: -1)).advance(days: -1)
     end
 
     p
