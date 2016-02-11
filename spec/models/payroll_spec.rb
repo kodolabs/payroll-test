@@ -43,4 +43,22 @@ RSpec.describe Payroll, type: :model do
       end
     end
   end
+
+  context 'dates calculation' do
+    before do
+      Rails.configuration.payroll_days = [3, 18, 30]
+    end
+
+    subject { Payroll.new }
+
+    it 'calculates next date' do
+      expect(subject.send(:next_date, DateTime.new(2016, 2, 20))).to eq(DateTime.new(2016, 2, 29))
+      expect(subject.send(:next_date, DateTime.new(2016, 8, 30))).to eq(DateTime.new(2016, 9, 3))
+    end
+
+    it 'calculates prev date' do
+      expect(subject.send(:next_date, DateTime.new(2016, 2, 3))).to eq(DateTime.new(2016, 1, 30))
+      expect(subject.send(:next_date, DateTime.new(2016, 3, 3))).to eq(DateTime.new(2016, 2, 29))
+    end
+  end
 end
