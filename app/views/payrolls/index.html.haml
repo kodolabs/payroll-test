@@ -1,5 +1,8 @@
 %h1 Payrolls
 
+- flash.each do |name, msg|
+  = content_tag :div, msg, class: name
+
 - if @payrolls.any?
   %ul
     - @payrolls.each do |payroll|

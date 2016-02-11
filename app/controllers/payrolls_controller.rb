@@ -7,6 +7,16 @@ class PayrollsController < ApplicationController
   end
 
   def create
+    if Payroll.time_for_a_new_one
+      p = Payroll.new_with_dates
+      if p.save
+        flash[:success] = 'New Payroll created'
+      else
+        flash[:error] = 'Could not save a new Payroll'
+      end
+    else
+      flash[:error] = 'Not a time for a new Payroll'
+    end
     redirect_to action: :index
   end
 
