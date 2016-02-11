@@ -17,6 +17,10 @@ RSpec.describe Payroll, type: :model do
       Timecop.freeze(DateTime.new(2016, 10, 11)) do
         expect(Payroll.time_for_a_new_one).to be true
       end
+      Timecop.freeze(DateTime.new(2016, 9, 18)) do
+        # last payroll till today
+        expect(Payroll.time_for_a_new_one).to be false
+      end
     end
 
     it 'detects next one not needed' do
@@ -49,7 +53,7 @@ RSpec.describe Payroll, type: :model do
       Rails.configuration.payroll_days = [3, 18, 30]
     end
 
-    subject { Payroll.new }
+    subject { Payroll }
 
     it 'calculates next date' do
       expect(subject.send(:next_date, DateTime.new(2016, 2, 20))).to eq(DateTime.new(2016, 2, 29))
