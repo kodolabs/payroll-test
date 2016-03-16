@@ -1,6 +1,6 @@
 class Payroll < ActiveRecord::Base
   STARTS = 5
-  ENDS = 29
+  ENDS = 15
 
   scope :ordered, -> { order(starts_at: :asc) }
   validates :starts_at, :ends_at, presence: true
@@ -35,9 +35,14 @@ class Payroll < ActiveRecord::Base
     last_payroll.ends_at.advance({ days: 1 })
   end
 
+  def spesific_cases?
+    last_payroll.ends_at.end_of_month.day <= ENDS
+  end
+
   def get_ends_at
     if self.starts_at.day != STARTS
-      self.starts_at.advance({ months: 1 }).change({ day: STARTS - 1 })
+      self.starts_at.advance({ months: spesific_cases? ? 0 : 1 }).
+        change({ day: STARTS - 1 })
     else
       self.starts_at.change({ day: ENDS - 1 })
     end
