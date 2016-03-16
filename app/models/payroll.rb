@@ -10,9 +10,9 @@ class Payroll < ActiveRecord::Base
   private
 
   def set_payrolls_attributes
-    raise "wrong days limints" unless valid_days_limit?
-    self.starts_at = starts
-    self.ends_at = ends
+    raise 'wrong days limints' unless valid_days_limit?
+    self.starts_at = starts.to_date
+    self.ends_at = ends.to_date
   end
 
   def valid_days_limit?
