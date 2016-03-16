@@ -24,7 +24,7 @@ class Payroll < ActiveRecord::Base
   end
 
   def ends
-    last_payroll ? get_ends_at : Time.now.change({ day: ENDS - 1 }).change({ day: ENDS - 1 })
+    last_payroll ? get_ends_at : Time.now.change({ day: ENDS - 1 })
   end
 
   def last_payroll
@@ -39,10 +39,13 @@ class Payroll < ActiveRecord::Base
     last_payroll.ends_at.end_of_month.day <= ENDS
   end
 
+  def change_month
+    spesific_cases? ? 0 : 1
+  end
+
   def get_ends_at
     if self.starts_at.day != STARTS
-      self.starts_at.advance({ months: spesific_cases? ? 0 : 1 }).
-        change({ day: STARTS - 1 })
+      self.starts_at.advance({ months: change_month }).change({ day: STARTS - 1 })
     else
       self.starts_at.change({ day: ENDS - 1 })
     end
