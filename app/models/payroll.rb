@@ -1,7 +1,7 @@
 class Payroll < ActiveRecord::Base
   scope :ordered, -> { order(starts_at: :asc) }
 
-  FIRST_DATE = 6
+  FIRST_DATE = 5
   SECOND_DATE = 20
 
   def self.make
