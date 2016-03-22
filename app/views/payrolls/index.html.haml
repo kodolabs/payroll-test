@@ -4,9 +4,13 @@
   %ul
     - @payrolls.each do |payroll|
       %li
-        = payroll.starts_at.to_s(:short)
+        payroll
+        &nbsp;
+        = payroll.id
+        = ':'
+        = payroll.starts_at.strftime("%-d %B")
         &mdash;
-        = payroll.ends_at.to_s(:short)
+        = payroll.ends_at.strftime("%-d %B")
         = link_to '[X]', payroll, method: :delete
 - else
   %p no payrolls
