@@ -7,7 +7,7 @@ class PayrollsController < ApplicationController
   end
 
   def create
-    redirect_to action: :index
+    redirect_to action: :index if Payroll.create
   end
 
   def destroy
