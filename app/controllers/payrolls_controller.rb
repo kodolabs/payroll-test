@@ -1,6 +1,6 @@
 class PayrollsController < ApplicationController
 
-  before_action :new_payroll, only: [:index]
+  before_action :new_payroll, :autocreate, only: [:index]
 
   def index
     @payrolls = Payroll.ordered.all
@@ -21,5 +21,15 @@ class PayrollsController < ApplicationController
 
   def new_payroll
     @new_payroll = Payroll.new
+  end
+
+   def autocreate
+    payrolls = Payroll.ordered.all
+    if payrolls.last
+      Payroll.create if Time.now.day.between?(
+        payrolls.first.starts_at.day, payrolls.last.ends_at.day)
+    else
+      Payroll.create
+    end 
   end
 end

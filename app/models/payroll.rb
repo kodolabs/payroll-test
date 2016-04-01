@@ -6,12 +6,32 @@ class Payroll < ActiveRecord::Base
   validates_presence_of :starts_at, :ends_at
   before_validation :set_attributes, on: :create
 
+  def last_p
+    Payroll.ordered.last
+  end
+
+  def today
+    Date.today
+  end
+
   def set_attributes
     raise ArgumentError unless
-        STARTS.between?(1, 31) && ENDS.between?(1, 31) && STARTS != ENDS && STARTS < ENDS
+      STARTS.between?(0, 31) && ENDS.between?(0, 31) && STARTS != ENDS && STARTS < ENDS
 
     self.starts_at =
-      Payroll.ordered.last ? Payroll.ordered.last.ends_at + 1.day : Time.new.change(day: STARTS).to_date
+      if last_p
+        last_p.ends_at + 1.day
+      elsif today.day.between?(STARTS, (ENDS - 1))
+        today.change(day: STARTS).to_date
+      else
+        #Avoid month 0 in ternary operator
+        if today.month == 1
+          today.change(day: ENDS, month: 12, year: (today.year - 1))
+        else
+          today.change(day: ENDS, month: (today.month - 1))
+        end
+      end
+
 
     self.ends_at =
       if starts_at.day != STARTS
