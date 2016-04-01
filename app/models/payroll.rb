@@ -23,15 +23,11 @@ class Payroll < ActiveRecord::Base
         last_p.ends_at + 1.day
       elsif today.day.between?(STARTS, (ENDS - 1))
         today.change(day: STARTS).to_date
+      elsif today.month == 1
+        today.change(day: ENDS, month: 12, year: (today.year - 1))
       else
-        #Avoid month 0 in ternary operator
-        if today.month == 1
-          today.change(day: ENDS, month: 12, year: (today.year - 1))
-        else
-          today.change(day: ENDS, month: (today.month - 1))
-        end
+        today.change(day: ENDS, month: (today.month - 1))
       end
-
 
     self.ends_at =
       if starts_at.day != STARTS
