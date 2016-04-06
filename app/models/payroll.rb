@@ -36,8 +36,7 @@ class Payroll < ActiveRecord::Base
   end
 
   def autocreate
-    payroll = Payroll.ordered.all.last
-    if payroll
+    if Payroll.any?
       Payroll.create if Date.today > payroll.ends_at
     else
       Payroll.create
