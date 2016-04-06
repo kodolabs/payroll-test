@@ -13,9 +13,10 @@ RSpec.describe Payroll, type: :model do
   describe 'Creates' do
     let(:payroll) {Payroll.create}
 
-#    it 'with id = 1' do
-#      expect(payroll.id).to eq(1)
-#    end
+    it 'Payroll successfully' do
+      Payroll.create
+      expect(Payroll.all.count).to eq(1)
+    end
     
     it 'with starts_at that exactly kind of Date' do
       expect(payroll.starts_at.class).to match Date
