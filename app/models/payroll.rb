@@ -6,14 +6,6 @@ class Payroll < ActiveRecord::Base
   validates_presence_of :starts_at, :ends_at
   before_validation :set_attributes, on: :create
 
-  def last_p
-    Payroll.ordered.last
-  end
-
-  def today
-    Date.today
-  end
-
   def set_attributes
     raise ArgumentError unless
       STARTS.between?(0, 31) && ENDS.between?(0, 31) &&
@@ -42,4 +34,22 @@ class Payroll < ActiveRecord::Base
       starts_at.change(day: ENDS - 1)
     end
   end
+
+  def autocreate
+    payroll = Payroll.ordered.all.last
+    if payroll
+      Payroll.create if Date.today > payroll.ends_at
+    else
+      Payroll.create
+    end
+  end
+
+  private
+    def last_p
+      Payroll.ordered.last
+    end
+
+    def today
+      Date.today
+    end
 end

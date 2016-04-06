@@ -22,4 +22,5 @@ class PayrollsController < ApplicationController
   def new_payroll
     @new_payroll = Payroll.new
   end
+
 end
