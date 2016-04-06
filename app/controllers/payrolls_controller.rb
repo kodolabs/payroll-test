@@ -1,5 +1,4 @@
 class PayrollsController < ApplicationController
-
   before_action :new_payroll, only: [:index]
 
   def index
@@ -7,6 +6,7 @@ class PayrollsController < ApplicationController
   end
 
   def create
+    Payroll.create
     redirect_to action: :index
   end
 
@@ -22,4 +22,5 @@ class PayrollsController < ApplicationController
   def new_payroll
     @new_payroll = Payroll.new
   end
+
 end
