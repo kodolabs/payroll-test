@@ -13,9 +13,9 @@ RSpec.describe Payroll, type: :model do
   describe 'Creates' do
     let(:payroll) {Payroll.create}
 
-    it 'with id = 1' do
-      expect(payroll.id).to eq(1)
-    end
+#    it 'with id = 1' do
+#      expect(payroll.id).to eq(1)
+#    end
     
     it 'with starts_at that exactly kind of Date' do
       expect(payroll.starts_at.class).to match Date
@@ -33,6 +33,13 @@ RSpec.describe Payroll, type: :model do
     it 'with ends_at = 4.01.2017' do
       set_points(5, 20)
       expect(payroll.ends_at).to eq(Date.new(2017, 1, 4))
+    end
+
+    it 'second Payroll with proper attributes' do
+      set_points(5, 20)
+      payroll = Payroll.create
+      payroll2 = Payroll.create
+      expect(payroll2.starts_at).to eq(Date.new(2017, 1, 5))
     end
   end
 

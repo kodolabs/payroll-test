@@ -25,7 +25,7 @@ class PayrollsController < ApplicationController
   def autocreate
     payrolls = Payroll.ordered.all
     if payrolls.last
-      Payroll.create if Time.now.day.between?(
+      Payroll.create if Date.today.between?(
         payrolls.first.starts_at.day, payrolls.last.ends_at.day)
     else
       Payroll.create
