@@ -26,13 +26,9 @@ RSpec.describe Payroll, type: :model do
       expect(payroll.starts_at..payroll.ends_at).to cover(today)
     end
 
-    it 'with starts_at = 20.12.2016' do
+    it 'with starts_at = 20.12.2016 & ends_at = 4.1.2017' do
       set_points(5, 20)
       expect(payroll.starts_at).to eq(Date.new(2016, 12, 20))
-    end
-
-    it 'with ends_at = 4.01.2017' do
-      set_points(5, 20)
       expect(payroll.ends_at).to eq(Date.new(2017, 1, 4))
     end
 
@@ -41,6 +37,7 @@ RSpec.describe Payroll, type: :model do
       payroll = Payroll.create
       payroll2 = Payroll.create
       expect(payroll2.starts_at).to eq(Date.new(2017, 1, 5))
+      expect(payroll2.ends_at).to eq(Date.new(2017, 1, 19))
     end
   end
 
