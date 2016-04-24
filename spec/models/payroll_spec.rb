@@ -15,7 +15,7 @@ RSpec.describe Payroll, type: :model do
       allow(Payroll).to receive(:sort_dates).and_return([1, 1])
 
       expect(subject.class.send(:start_payroll)).to eq({ start_at: Time.parse('2016-01-01 00:00:00.000000000 UTC'),
-                                                         ends_at:  Time.parse('2016-01-31 00:00:00.000000000 UTC') })
+                                                         ends_at:  Time.parse('2016-01-31 23:59:59.999999999 UTC') })
     end
 
     it 'testing of start_payroll with period 30,31' do
