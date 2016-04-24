@@ -11,10 +11,13 @@ module PayrollHelper
     private
 
     def start_payroll
-      new_year = Time.new.utc.beginning_of_year
+      new_year   = Time.new.utc.beginning_of_year
+      ends_at    = new_year.end_of_month if new_year.end_of_month.day < sort_dates.last - 1
+      ends_at  ||= sort_dates.last - 1 > 0 ? new_year.change(day: sort_dates.last - 1) : new_year.end_of_month
+      start_at   = new_year.end_of_month.day < sort_dates.first ? new_year.end_of_month : new_year.change(day: sort_dates.first)
       {
-        start_at: new_year.change(day: sort_dates.first),
-        ends_at:  new_year.end_of_month.day < sort_dates.last - 1 ? new_year.end_of_month : new_year.change(day: sort_dates.last - 1)
+          start_at: start_at,
+          ends_at:  ends_at
       }
     end
 
