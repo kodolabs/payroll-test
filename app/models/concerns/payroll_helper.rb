@@ -41,7 +41,7 @@ module PayrollHelper
     end
 
     def sort_dates
-      Payroll::DATE_ARRAY.sort
+      @sort_array ||= Payroll::DATE_ARRAY.sort
     end
   end
 end
