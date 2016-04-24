@@ -16,7 +16,7 @@ module PayrollHelper
       ends_at  ||= sort_dates.last - 1 > 0 ? new_year.change(day: sort_dates.last - 1) : new_year.end_of_month
       start_at   = new_year.end_of_month.day < sort_dates.first ? new_year.end_of_month : new_year.change(day: sort_dates.first)
       {
-          start_at: start_at,
+          starts_at: start_at,
           ends_at:  ends_at
       }
     end
@@ -25,7 +25,7 @@ module PayrollHelper
       last_payroll_ends_at = Time.parse(Payroll.ordered.last.ends_at.to_s)
       start_at             = last_payroll_ends_at.advance(days: 1)
       sort_dates.first <= last_payroll_ends_at.day ? ends_at = get_ends_date(start_at, sort_dates.first) : ends_at = get_ends_date(start_at, sort_dates.last)
-      { start_at: start_at, ends_at: ends_at }
+      { starts_at: start_at, ends_at: ends_at }
     end
 
     def get_ends_date(start_at, day)
