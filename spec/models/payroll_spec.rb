@@ -35,11 +35,7 @@ RSpec.describe Payroll, type: :model do
     end
   end
 
-  context 'get_new_payroll_attributes' do
-    before(:each) do
-      allow(Payroll).to receive_message_chain(:count).and_return(1)
-    end
-
+  context 'standard_payroll' do
     it 'testing of last date 04-19 with period 5,20'do
       allow(Payroll).to receive(:sort_dates).and_return([5, 20])
       allow(Payroll).to receive_message_chain(:ordered, :last, :ends_at, :to_s).and_return('2016-04-19 23:59:59.999999999 UTC')
