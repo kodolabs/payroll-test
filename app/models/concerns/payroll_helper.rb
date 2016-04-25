@@ -15,10 +15,7 @@ module PayrollHelper
       ends_at    = new_year.end_of_month if new_year.end_of_month.day < sort_dates.last - 1
       ends_at  ||= sort_dates.last - 1 > 0 ? new_year.change(day: sort_dates.last - 1) : new_year.end_of_month
       start_at   = new_year.end_of_month.day < sort_dates.first ? new_year.end_of_month : new_year.change(day: sort_dates.first)
-      {
-          starts_at: start_at,
-          ends_at:  ends_at
-      }
+      { starts_at: start_at, ends_at:  ends_at }
     end
 
     def standard_payroll
