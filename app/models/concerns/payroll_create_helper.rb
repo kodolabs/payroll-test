@@ -35,5 +35,25 @@ module PayrollCreateHelper
 
       next_start_day - 1.day
     end
+
+    def exists_for_date?(date)
+      next_payroll_attributes =
+        if Payroll.count > 0
+          payroll_parameters
+        else
+          first_payroll_parameters
+        end
+
+      next_start = next_payroll_attributes[:starts_at]
+      next_end   = next_payroll_attributes[:ends_at]
+
+      date.between?(next_start, next_end)
+    end
+
+    def auto_create
+      unless exists_for_date?(DateTime.current)
+        Payroll.create
+      end
+    end
   end
 end

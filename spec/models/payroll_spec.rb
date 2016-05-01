@@ -44,5 +44,24 @@ RSpec.describe Payroll, type: :model do
         expect(payroll.ends_at).to eq DateTime.parse("29 Feb 2016")
       end
     end
+
+    describe '.auto_create' do
+      before do
+        stub_const("Payroll::START_DATES", [5, 20])
+        Timecop.freeze("5 Jan 2016".to_datetime)
+      end
+      after { Timecop.return }
+
+      it 'creates 1st payroll' do
+        Timecop.freeze("20 Jan 2016".to_datetime)
+        expect { Payroll.auto_create }.to change(Payroll, :count).by(1)
+      end
+
+      it 'does not create payroll if it exist' do
+        Payroll.create
+        Timecop.freeze("20 Jan 2016".to_datetime)
+        expect { Payroll.auto_create }.to_not change(Payroll, :count)
+      end
+    end
   end
 end
