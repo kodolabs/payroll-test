@@ -1,12 +1,14 @@
 %h1 Payrolls
 
+= link_to 'Manage Pay Dates', pay_dates_path
+
 - if @payrolls.any?
   %ul
     - @payrolls.each do |payroll|
       %li
-        = payroll.starts_at.to_s(:short)
+        = payroll.starts_at&.strftime('%d %B')
         &mdash;
-        = payroll.ends_at.to_s(:short)
+        = payroll.ends_at&.strftime('%d %B')
         = link_to '[X]', payroll, method: :delete
 - else
   %p no payrolls

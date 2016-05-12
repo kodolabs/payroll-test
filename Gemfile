@@ -24,6 +24,8 @@ gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
 
 gem 'haml-rails'
+gem 'validates_timeliness'
+gem 'draper', '~> 2.1.0'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
@@ -37,14 +39,24 @@ gem 'haml-rails'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
-  gem 'rspec-rails'
+  # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
+  gem 'spring'
+end
+
+group :test do
+  gem 'shoulda-matchers', '~> 2.8.0'
+  gem 'shoulda-callback-matchers', '~> 1.1.1'
+  gem 'rspec-rails', '3.4.2'
+  gem 'database_cleaner', '~> 1.5', '>= 1.5.1'
+  gem 'timecop', '~> 0.8.0'
+  gem 'factory_girl_rails', '~> 4.3.0'
 end
 
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'
-
-  # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  gem 'spring'
+  gem 'rack-mini-profiler'
+  gem 'awesome_print'
+  gem 'better_errors'
+  gem 'active_record_query_trace'
 end
-

@@ -1,0 +1,16 @@
+%h1 Pay Dates
+
+= link_to 'Manage Payrolls', payrolls_path
+
+- if pay_dates.any?
+  %ul
+    - pay_dates.each do |pay_date|
+      %li
+        = pay_date.show_date
+        = link_to '[X]', pay_date.object, method: :delete
+- else
+  %p Any paydates yet
+
+= form_for new_pay_date do |f|
+  = f.number_field :pay_date, min: 1, max: 31
+  = button_tag 'Create new pay date'
