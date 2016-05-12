@@ -21,3 +21,6 @@
 
 en:
   hello: "Hello world"
+  dates:
+    first_day: "First day of the month"
+    last_date: "Last day of the month"

@@ -11,7 +11,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160204093740) do
+ActiveRecord::Schema.define(version: 20160512130121) do
+
+  create_table "pay_dates", force: :cascade do |t|
+    t.integer "pay_date"
+    t.boolean "is_first"
+    t.boolean "is_last"
+  end
 
   create_table "payrolls", force: :cascade do |t|
     t.datetime "starts_at"

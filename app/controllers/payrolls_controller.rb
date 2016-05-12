@@ -7,6 +7,7 @@ class PayrollsController < ApplicationController
   end
 
   def create
+    PayrollService.new(Payroll.ordered.last).create
     redirect_to action: :index
   end
 
