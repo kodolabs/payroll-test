@@ -19,20 +19,17 @@ class Payroll < ActiveRecord::Base
     prev_period_starts_at = maximum(:ends_at)
     return prev_period_starts_at.tomorrow if prev_period_starts_at
 
-    [Date.today, Date.today.at_beginning_of_month.next_month].each do |date|
-      PAYMENT_DAYS.each do |payment_day|
-        date = date.change(day: payment_day)
-        return date if Date.today <= date
-      end
-    end
+    nearest_payment_date(Date.today)
   end
 
   def self.next_period_ends_at(starts_at)
-    [starts_at, starts_at.at_beginning_of_month.next_month].each do |date|
-      PAYMENT_DAYS.each do |payment_day|
-        date = date.change(day: payment_day)
-        return date.yesterday if starts_at < date
-      end
+    nearest_payment_date(starts_at.tomorrow).yesterday
+  end
+
+  def self.nearest_payment_date(date_from)
+    [date_from, date_from.at_beginning_of_month.next_month].each do |date|
+      result = PAYMENT_DAYS.map { |d| date.change(day: d) }.detect { |d| date <= d }
+      return result unless result.blank?
     end
   end
 end
