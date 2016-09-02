@@ -7,6 +7,14 @@ class PayrollsController < ApplicationController
   end
 
   def create
+    payroll = PayrollService.new.generate
+
+    if payroll.save
+      flash[:notice] = 'Payroll was successfully created'
+    else
+      flash[:error] = payroll.errors.full_message
+    end
+
     redirect_to action: :index
   end
 
