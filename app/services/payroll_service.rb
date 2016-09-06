@@ -2,10 +2,7 @@ class PayrollService
 
   # Default periods need to extract to different tables in db
   # And add model for management.
-  DEFAULT_PERIODS = {
-    5 => 19,
-    20 => 4
-  }
+  DEFAULT_STARTS_DAYS = [5, 20]
 
   attr_reader :start_date, :end_date
 
@@ -28,44 +25,34 @@ class PayrollService
     @date ||= (last_payroll ? last_payroll.ends_at : nil)
   end
 
-  def first_date
-    today_date = Date.today.day
-
-    DEFAULT_PERIODS.each do |start_period, _|
-      if today_date <= start_period
-        days_to_start_period = start_period - today_date
-        return Date.today + days_to_start_period
-      end
-    end
+  def today
+    @today ||= Date.today
   end
 
   def start_date
-    new_start_date = last_end_date ? last_end_date + 1.day : first_date
-    @start_date ||= if DEFAULT_PERIODS[new_start_date.day]
-                      new_start_date
-                    else
-                      correct_start_date(new_start_date)
-                    end
-
+    @start_date ||= last_end_date ? next_starts_at : first_date(today)
   end
 
-  def correct_start_date(start_payroll)
-    next_day_from_range = find_day_number_after_last_ends_at(start_payroll)
-
-    if next_day_from_range.nil?
-      get_date_by_first_range(start_payroll)
+  def first_date(current_day)
+    if start_day_in_current_month(current_day)
+      current_day + (start_day_in_current_month(current_day) - current_day.day).days
     else
-      get_date_from_range_after_last_ends_at(start_payroll, next_day_from_range)
+      get_date_by_first_range(current_day)
     end
   end
 
-  def get_date_by_first_range(start_day)
-    find_next_day = DEFAULT_PERIODS.keys[0]
-    start_day.end_of_month + find_next_day.days
+  def next_starts_at
+    next_date = (last_end_date - 1.day)
+
+    DEFAULT_STARTS_DAYS.include?(next_date.day) ? next_date : first_date(next_date)
   end
 
-  def find_day_number_after_last_ends_at(starts_at)
-    DEFAULT_PERIODS.select{|day| day > starts_at.day}.keys[0]
+  def start_day_in_current_month(current_date)
+    @next_day ||= DEFAULT_STARTS_DAYS.select{|day| day >= current_date.day }.first
+  end
+
+  def get_date_by_first_range(start_day)
+    start_day.end_of_month + DEFAULT_STARTS_DAYS.first.days
   end
 
   def get_date_from_range_after_last_ends_at(starts_at, next_day_from_range)
@@ -73,12 +60,12 @@ class PayrollService
   end
 
   def end_date
-    first_day = start_date.day
-    #byebug
-    if DEFAULT_PERIODS[first_day] > first_day
-      @end_date ||= start_date + (DEFAULT_PERIODS[first_day] - first_day).days
+    next_day_in_month = DEFAULT_STARTS_DAYS.select{|day| day > start_date.day }.first
+
+    if next_day_in_month
+      @end_date ||= start_date + (next_day_in_month - 1 - start_date.day).days
     else
-      @end_date ||= start_date.end_of_month + DEFAULT_PERIODS[first_day].days
+      @end_date ||= start_date.end_of_month + (DEFAULT_STARTS_DAYS.first - 1).days
     end
   end
 end

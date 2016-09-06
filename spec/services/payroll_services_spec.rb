@@ -2,12 +2,21 @@ require 'rails_helper'
 
 RSpec.describe PayrollService, type: :service do
   describe '#generate' do
+    before do
+      Timecop.freeze(Date.today.beginning_of_month)
+    end
+
+    after do
+      Timecop.return
+    end
+
     context 'generate first payroll' do
       it 'generate payroll' do
-        current_payroll_count = Payroll.count
-        create_payroll
+        new_payroll = create_payroll
 
-        expect(Payroll.count).to eq (current_payroll_count + 1)
+        expect change(Payroll, :count).by(1)
+        expect(new_payroll.starts_at.day).to eq (starts_day(0))
+        expect(new_payroll.ends_at.day).to eq (ends_day(0))
       end
     end
 
@@ -17,12 +26,13 @@ RSpec.describe PayrollService, type: :service do
       end
 
       it 'generate second payroll' do
-        current_payroll_count = fetch_payroll_count
         last_payroll = fetch_last_payroll
         current_payroll = create_payroll
 
-        expect(Payroll.count).to eq (current_payroll_count + 1)
+        expect change(Payroll, :count).from(1).to(2)
         expect(last_payroll.ends_at).to eq (current_payroll.starts_at - 1.day)
+        expect(current_payroll.starts_at.day).to eq (starts_day(1))
+        expect(current_payroll.ends_at.day).to eq (ends_day(1))
       end
     end
 
@@ -34,11 +44,10 @@ RSpec.describe PayrollService, type: :service do
       end
 
       it 'generate next payroll' do
-        current_payroll_count = fetch_payroll_count
         last_payroll = fetch_last_payroll
         current_payroll = create_payroll
 
-        expect(Payroll.count).to eq (current_payroll_count + 1)
+        expect change(Payroll, :count).from(1).to(2)
         expect(current_payroll.starts_at).not_to eq (last_payroll.ends_at + 1.day)
       end
     end
@@ -57,7 +66,15 @@ RSpec.describe PayrollService, type: :service do
     Payroll.last
   end
 
-  def fetch_payroll_count
-    Payroll.count
+  def default_periods
+    @default_periods ||= StubPayrollService::DEFAULT_STARTS_DAYS
+  end
+
+  def starts_day(period_number)
+    default_periods[period_number]
+  end
+
+  def ends_day(period_number)
+    period_number >= default_periods.count - 1 ? default_periods.first - 1 : default_periods[period_number + 1] - 1
   end
 end
