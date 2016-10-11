@@ -7,6 +7,7 @@ class PayrollsController < ApplicationController
   end
 
   def create
+    Payroll::CreateNext.new.call
     redirect_to action: :index
   end
 
