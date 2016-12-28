@@ -2,16 +2,21 @@ RSpec.describe Payrolls::GenerateStartsAtEndsAtService do
   let(:year) { 2011 }
   let(:month) { 8 }
   let(:day) { 16 }
+  let(:pay_days) { [5, 20] }
 
   subject { described_class.call() }
+
+  before do
+    stub_const("#{Payroll}::PAY_DAYS", pay_days)
+  end
 
   around do |example|
     Timecop.freeze(Date.new(year, month, day), &example)
   end
 
   context 'when there is no payrolls' do
-    let(:starts_at) { Date.new(year, month, Payroll::SECOND_HALF_STARTS_AT) }
-    let(:ends_at) { Date.new(year, month + 1, Payroll::FIRST_HALF_STARTS_AT - 1) }
+    let(:starts_at) { Date.new(year, month, pay_days[1]) }
+    let(:ends_at) { Date.new(year, month + 1, pay_days[0] - 1) }
 
     it 'generate starts_at for next half regarding today' do
       expect(subject.starts_at).to eq(starts_at)
@@ -25,14 +30,14 @@ RSpec.describe Payrolls::GenerateStartsAtEndsAtService do
   context 'when there is some payrolls' do
     let(:year) { 2010 }
     let(:month) { 9 }
-    let(:starts_at) { Date.new(year, month + 1, Payroll::FIRST_HALF_STARTS_AT) }
-    let(:ends_at) { Date.new(year, month + 1, Payroll::SECOND_HALF_STARTS_AT - 1) }
+    let(:starts_at) { Date.new(year, month + 1, pay_days[0]) }
+    let(:ends_at) { Date.new(year, month + 1, pay_days[1] - 1) }
 
     before do
       FactoryGirl.create(
         :payroll,
-        starts_at: Date.new(year, month, Payroll::SECOND_HALF_STARTS_AT),
-        ends_at: Date.new(year, month + 1, Payroll::FIRST_HALF_STARTS_AT - 1)
+        starts_at: Date.new(year, month, pay_days[1]),
+        ends_at: Date.new(year, month + 1, pay_days[0] - 1)
       )
     end
 

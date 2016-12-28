@@ -1,6 +1,14 @@
 RSpec.describe Payrolls::GeneratePayrollOrganizer do
+  let(:pay_days) { [5, 20] }
+
+  subject { described_class.call() }
+
+  before do
+    stub_const("#{Payroll}::PAY_DAYS", pay_days)
+  end
+
   around do |example|
-    Timecop.freeze(Date.new(2010, 10, Payroll::SECOND_HALF_STARTS_AT - 1), &example)
+    Timecop.freeze(Date.new(2010, 10, pay_days[0] - 1), &example)
   end
 
   # TODO: MB we need better test for this
@@ -16,7 +24,7 @@ RSpec.describe Payrolls::GeneratePayrollOrganizer do
                      .each_slice(2).with_object([]) { |(a, b), o| o << [a, b] }
                      .uniq
                      .flatten
-      expect(days).to eq([Payroll::SECOND_HALF_STARTS_AT, Payroll::FIRST_HALF_STARTS_AT])
+      expect(days).to eq(pay_days)
     end
   end
 end

@@ -12,18 +12,18 @@ module Payrolls
     def starts_at
       if last_payroll.present?
         last_payroll.ends_at + 1.day
-      elsif today.day < Payroll::SECOND_HALF_STARTS_AT
-        today.change(day: Payroll::SECOND_HALF_STARTS_AT)
+      elsif initial_pay_day
+        today.change(day: initial_pay_day)
       else
-        (today + 1.month).change(day: Payroll::FIRST_HALF_STARTS_AT)
+        (today + 1.month).change(day: pay_days.first)
       end
     end
 
     def ends_at
-      if starts_at.day == Payroll::FIRST_HALF_STARTS_AT
-        starts_at.change(day: Payroll::SECOND_HALF_STARTS_AT - 1)
+      if next_pay_day
+        starts_at.change(day: next_pay_day - 1)
       else
-        (starts_at + 1.month).change(day: Payroll::FIRST_HALF_STARTS_AT - 1)
+        (starts_at + 1.month).change(day: pay_days.first - 1)
       end
     end
 
@@ -33,6 +33,18 @@ module Payrolls
 
     def last_payroll
       @last_payroll ||= Payroll.ordered.last
+    end
+
+    def initial_pay_day
+      pay_days.select { |d| today.day < d }.first
+    end
+
+    def next_pay_day
+      pay_days[pay_days.find_index(starts_at.day) + 1]
+    end
+
+    def pay_days
+      Payroll::PAY_DAYS.sort
     end
   end
 end
