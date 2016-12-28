@@ -40,7 +40,7 @@ module Payrolls
     end
 
     def next_pay_day
-      pay_days[pay_days.find_index(starts_at.day) + 1]
+      pay_days.select { |d| starts_at.day < d }.first
     end
 
     def pay_days
