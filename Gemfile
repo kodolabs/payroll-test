@@ -40,7 +40,8 @@ group :development, :test do
   gem 'byebug'
   gem 'factory_girl'
   gem 'minitest-reporters', '1.0.5'
-  gem "minitest-rails"
+  gem 'minitest-rails'
+  gem 'mocha'
 end
 
 group :development do
