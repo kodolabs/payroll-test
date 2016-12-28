@@ -3,29 +3,19 @@ module Payrolls
     include Interactor
 
     def call
-      context.starts_at = starts_at
-      context.ends_at = ends_at
+      context.starts_at = starts_at.to_date
+      context.ends_at = ends_at.to_date
     end
 
     private
 
-    def last_payroll
-      Payroll.ordered.last
-    end
-
     def starts_at
       if last_payroll.present?
-        if last_payroll.first_half?
-          last_payroll.starts_at.change(day: Payroll::SECOND_HALF_STARTS_AT)
-        else
-          (last_payroll.starts_at + 1.month).change(day: Payroll::FIRST_HALF_STARTS_AT)
-        end
+        last_payroll.ends_at + 1.day
+      elsif today.day < Payroll::SECOND_HALF_STARTS_AT
+        today.change(day: Payroll::SECOND_HALF_STARTS_AT)
       else
-        if today.day < 15
-          today.change(day: Payroll::SECOND_HALF_STARTS_AT)
-        else
-          (today + 1.month).change(day: Payroll::FIRST_HALF_STARTS_AT)
-        end
+        (today + 1.month).change(day: Payroll::FIRST_HALF_STARTS_AT)
       end
     end
 
@@ -33,12 +23,16 @@ module Payrolls
       if starts_at.day == Payroll::FIRST_HALF_STARTS_AT
         starts_at.change(day: Payroll::SECOND_HALF_STARTS_AT - 1)
       else
-        (starts_at + 1.month).change(day: Payroll::SECOND_HALF_STARTS_AT - 1)
+        (starts_at + 1.month).change(day: Payroll::FIRST_HALF_STARTS_AT - 1)
       end
     end
 
     def today
       @today ||= Date.today
+    end
+
+    def last_payroll
+      @last_payroll ||= Payroll.ordered.last
     end
   end
 end
