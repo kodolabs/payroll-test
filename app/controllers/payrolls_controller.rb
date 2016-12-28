@@ -1,5 +1,4 @@
 class PayrollsController < ApplicationController
-
   before_action :new_payroll, only: [:index]
 
   def index
@@ -7,14 +6,13 @@ class PayrollsController < ApplicationController
   end
 
   def create
+    Payrolls::GeneratePayrollOrganizer.call
     redirect_to action: :index
   end
 
   def destroy
     @payroll = Payroll.find params[:id]
-    if @payroll.destroy
-      redirect_to :back
-    end
+    redirect_to :back if @payroll.destroy
   end
 
   private
