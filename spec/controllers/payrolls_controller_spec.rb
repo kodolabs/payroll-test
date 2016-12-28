@@ -7,9 +7,15 @@ RSpec.describe PayrollsController do
   end
 
   describe 'POST create' do
-    it 'renders the index template' do
-      post :create
+    subject { post :create }
+
+    it 'redirect to index page' do
+      subject
       expect(response).to redirect_to(action: :index)
+    end
+
+    it 'create new record' do
+      expect { subject }.to change { Payroll.count }.from(0).to(1)
     end
   end
 end
