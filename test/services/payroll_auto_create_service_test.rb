@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class PayrollCreateServiceTest < ActiveSupport::TestCase
+class PayrollAutoCreateServiceTest < ActiveSupport::TestCase
   setup do
     Payroll.delete_all
     @service = Services::PayrollAutoCreate.new
