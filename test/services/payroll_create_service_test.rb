@@ -5,6 +5,12 @@ class PayrollCreateServiceTest < ActiveSupport::TestCase
     @service = Services::PayrollCreate.new
   end
 
+  test 'creation ' do
+    Payroll.delete_all
+    @service.process
+    assert_equal Payroll.count, 1
+  end
+
   test 'consistency for first payroll' do
     Payroll.stubs(:last_ends_at).returns('1994-07-12'.to_datetime)
     Utils::Schedule.stubs(:schedule_days).returns([6, 28])

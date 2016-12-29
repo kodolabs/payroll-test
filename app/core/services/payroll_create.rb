@@ -1,10 +1,6 @@
 class Services::PayrollCreate
-  def initialize
-
-  end
-
   def process
-
+    create_new_payroll
   end
 
   def create_new_payroll
