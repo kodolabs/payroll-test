@@ -1,3 +1,5 @@
+require 'test_helper'
+
 class PayrollValidationTest < ActiveSupport::TestCase
   setup do
     @some_date = DateTime.now
