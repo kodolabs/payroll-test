@@ -9,8 +9,8 @@ class PayrollCreateServiceTest < ActiveSupport::TestCase
   test 'consistency for first payroll' do
     Payroll.stubs(:last_ends_at).returns('1994-07-12'.to_datetime)
     payroll = @service.create_new_payroll
-    assert_equal payroll.starts_at, '1994-07-12'.to_datetime
-    assert_equal payroll.ends_at, '1994-07-28'.to_datetime
+    assert_equal payroll.starts_at, '1994-07-13'.to_datetime
+    assert_equal payroll.ends_at, '1994-07-27'.to_datetime
   end
 
   test 'consistency for some payrolls' do
