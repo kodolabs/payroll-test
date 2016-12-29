@@ -1,3 +1,5 @@
+require 'test_helper'
+
 class ScheduleDatesTest < ActiveSupport::TestCase
   test 'nearest next date inclusive' do
     Utils::Schedule.stubs(:schedule_days).returns([6, 28])
