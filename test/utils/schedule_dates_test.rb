@@ -12,4 +12,9 @@ class ScheduleDatesTest < ActiveSupport::TestCase
     assert_equal Utils::Schedule.next_scheduled_date_exclusive('1994-07-07'.to_datetime), '1994-07-27'.to_datetime
     assert_equal Utils::Schedule.next_scheduled_date_exclusive('1994-07-28'.to_datetime), '1994-07-27'.to_datetime
   end
+
+  test 'fix scheduled days' do
+    Utils::Schedule.stubs(:schedule_days).returns([6, 28, 29, 30])
+    assert_equal Utils::Schedule.fix_schedule_days_for('1994-02-12'.to_datetime), [6, 28, 28, 28]
+  end
 end
