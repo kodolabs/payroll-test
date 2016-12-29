@@ -18,5 +18,4 @@ class PayrollAutoCreateServiceTest < ActiveSupport::TestCase
     @service.process
     assert_equal Payroll.count, 1
   end
-
 end
