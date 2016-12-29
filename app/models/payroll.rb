@@ -13,11 +13,7 @@ class Payroll < ActiveRecord::Base
     errors.add(:starts_at, 'can not be after ends_at') if starts_at > ends_at
   end
 
-  def self.next_starts_at
-
-  end
-
-  def self.next_ends_at
+  def self.last_ends_at
 
   end
 end
