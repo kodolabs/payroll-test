@@ -28,6 +28,6 @@ class Utils::Schedule
                                            .map {|schedule_day| schedule_day - from.day}
                                            .each_with_index.find { |diff, index| diff >= 0}
     return nil if positive_diff_index.nil?
-    return from.change(day: schedule_days[positive_diff_index])
+    return from.change(day: fix_schedule_days_for(from)[positive_diff_index])
   end
 end
