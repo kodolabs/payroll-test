@@ -14,6 +14,7 @@ class Payroll < ActiveRecord::Base
   end
 
   def self.last_ends_at
-
+    return DateTime.now if Payroll.count.zero?
+    ordered.last.ends_at
   end
 end

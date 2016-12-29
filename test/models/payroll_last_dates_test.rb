@@ -1,12 +1,12 @@
 class PayrollValidationTest < ActiveSupport::TestCase
-
-  def app
-    Rails.application
+  setup do
+    @some_date = DateTime.now
+    DateTime.stubs(:now).returns(@some_date)
   end
 
   test 'last_ends_at with no payrolls exists' do
     Payroll.delete_all
-    assert_equal Payroll.last_ends_at, DateTime.now
+    assert_equal @some_date, Payroll.last_ends_at
   end
 
   test 'last_ends_at with some payrolls exists' do
