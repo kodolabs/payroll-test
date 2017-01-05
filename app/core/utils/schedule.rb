@@ -1,6 +1,19 @@
 class Utils::Schedule
   SCHEDULE_DAYS = [5, 20].sort.freeze
 
+  def self.next_interval_start
+    last_interval_end + 1.day
+  end
+
+  def self.next_interval_end
+    next_scheduled_date_exclusive(next_interval_start + 1.day)
+  end
+
+  def self.last_interval_end
+    return DateTime.now if Payroll.count.zero?
+    Payroll.ordered.last.ends_at
+  end
+
   def self.next_scheduled_date_inclusive(from)
     [next_schedule_date_of_this_month(from), next_schedule_date_of_next_month(from)].find{|x| x}
   end

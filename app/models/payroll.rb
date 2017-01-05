@@ -12,9 +12,4 @@ class Payroll < ActiveRecord::Base
     return if ends_at.nil?
     errors.add(:starts_at, 'can not be after ends_at') if starts_at > ends_at
   end
-
-  def self.last_ends_at
-    return DateTime.now if Payroll.count.zero?
-    ordered.last.ends_at
-  end
 end

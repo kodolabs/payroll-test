@@ -12,7 +12,7 @@ class PayrollCreateServiceTest < ActiveSupport::TestCase
   end
 
   test 'consistency for first payroll' do
-    Payroll.stubs(:last_ends_at).returns('1994-07-12'.to_datetime)
+    Utils::Schedule.stubs(:last_interval_end).returns('1994-07-12'.to_datetime)
     Utils::Schedule.stubs(:schedule_days).returns([6, 28])
     payroll = @service.send(:create_new_payroll)
     assert_equal payroll.starts_at, '1994-07-13'.to_datetime

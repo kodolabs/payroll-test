@@ -1,6 +1,6 @@
 class Services::PayrollAutoCreate < Services::PayrollCreate
   def process
-    if DateTime.now >= Payroll.last_ends_at
+    if DateTime.now >= Utils::Schedule.last_interval_end
       super
     end
   end
