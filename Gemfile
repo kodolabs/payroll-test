@@ -25,20 +25,15 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 gem 'haml-rails'
 
-# Use ActiveModel has_secure_password
-# gem 'bcrypt', '~> 3.1.7'
+gem 'whenever', :require => false
 
-# Use Unicorn as the app server
-# gem 'unicorn'
-
-# Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
-
-group :development, :test do
-  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug'
-  gem 'rspec-rails'
+group :test do
+  gem 'factory_girl'
+  gem 'minitest-reporters', '1.0.5'
+  gem 'minitest-rails'
+  gem 'mocha'
 end
+
 
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> in views
