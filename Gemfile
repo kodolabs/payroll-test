@@ -48,3 +48,8 @@ group :development do
   gem 'spring'
 end
 
+gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+
+# Annotate models
+# use: annotate --exclude tests,fixtures,factories,serializers
+gem 'annotate'
