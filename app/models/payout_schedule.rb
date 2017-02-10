@@ -1,4 +1,4 @@
-# Name of class justified by the specifications (schedule can be changed in future)
+# Name of class justified by the task specifications (schedule can be changed in future)
 class PayoutSchedule < ActiveRecord::Base
   validates :day_of_month, uniqueness: true,
                            presence: true,
