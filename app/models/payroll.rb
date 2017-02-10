@@ -34,12 +34,12 @@ class Payroll < ActiveRecord::Base
       next_date = nil
       days.each do |day|
         if day > starts_at.day
-          next_date = starts_at.change(day: day - 1)
+          next_date = starts_at.change(day: day)
           break
         end
       end
-      next_date = (starts_at + 1.month).change(day: days.min - 1) if next_date.nil?
-      next_date
+      next_date = (starts_at + 1.month).change(day: days.min) if next_date.nil?
+      next_date - 1.day
     end
   end
 
