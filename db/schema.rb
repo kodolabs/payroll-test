@@ -14,7 +14,7 @@
 ActiveRecord::Schema.define(version: 20170209202931) do
 
   create_table "payout_schedules", force: :cascade do |t|
-    t.integer  "day_of_month", null: false
+    t.integer  "day_of_month"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
   end
