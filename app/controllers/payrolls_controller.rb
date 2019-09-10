@@ -7,6 +7,7 @@ class PayrollsController < ApplicationController
   end
 
   def create
+    CreatePayrollService.call(payrolls_collection: Payroll.ordered)
     redirect_to action: :index
   end
 
