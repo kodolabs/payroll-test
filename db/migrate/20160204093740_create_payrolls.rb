@@ -1,4 +1,4 @@
-class CreatePayrolls < ActiveRecord::Migration
+class CreatePayrolls < ActiveRecord::Migration[6.0]
   def change
     create_table :payrolls do |t|
       t.datetime :starts_at
