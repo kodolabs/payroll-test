@@ -7,10 +7,16 @@
         = payroll.starts_at.to_s(:short)
         &mdash;
         = payroll.ends_at.to_s(:short)
-        = link_to '[X]', payroll, method: :delete
+        = link_to('[X]', payroll_path(payroll.id),
+          data: { confirm: 'Are you sure?',
+          remote: true,
+          method: :delete,
+          reload: true,
+          style: 'zoom-out' })
+
 - else
   %p no payrolls
 
 
-= form_for @new_payroll do
+= form_for @new_payroll, :url => {:controller => 'payrolls', :action => 'create'} do |f|
   = button_tag 'Create new payroll'
